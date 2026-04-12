@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <meta charset="UTF-8">
+    <title>Конвертор</title>
+    <style>
+        body {
+            background: radial-gradient(circle, rgb(60, 73, 190), rgb(24, 34, 107));
+            font-family: Arial, sans-serif;
+            margin-left: 60px;
+        }
+
+        /* Анимация фона (движущийся блик) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: moveBg 12s infinite alternate;
+            z-index: -1;
+        }
+        @keyframes moveBg {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(10%, 5%) scale(1.3);
+                opacity: 0.8;
+            }
+        }
+
+        /* Анимация появления карточек */
+        .card {
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Задержки для каждой карточки */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.3s; }
+        .card:nth-child(3) { animation-delay: 0.5s; }
+
+        /* --- Остальные стили (без изменений) --- */
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        h2 {
+            color: white;
+            font-size: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        input {
+            text-align: center;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+        }
+        .row {
+            margin: 20px 0;
+        }
+        label {
+            color: white;
+            font-size: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .container {
+            margin: 20px 0;
+        }
+        .column {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+        .emod {
+            color: white;
+            font-size: 65px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Перевод физических величин</h1>
+
+    <!-- Контейнер для трёх карточек. Каждой карточке добавлен класс card -->
+    <div style="display: flex; gap: 100px; flex-wrap: wrap; justify-content: center;">
+        <!-- Карточка 1: Скорость -->
+        <div class="column card">
+            <div>
+                <h2><span class="emod">🏃‍♂️‍➡️</span>Скорость</h2>
+                <div class="row">
+                    <label>км/ч</label>
+                    <input id="kmh" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
+                </div>
+                <div class="row">
+                    <label>м /с</label>
+                    <input id="ms" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка 2: Время -->
+        <div class="column card">
+            <div>
+                <h2><span class="emod">⏱️</span>Время</h2>
+                <div class="container">
+                    <label>Сек </label>
+                    <input id="sec" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
+                </div>
+                <div class="container">
+                    <label>Час</label>
+                    <input id="hour" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка 3: Температура -->
+        <div class="column card">
+            <div>
+                <h2><span class="emod">🌡️</span>Температура</h2>
+                <div class="row">
+                    <label>°C</label>
+                    <input id="celsius" type="text" style="width:365px; height:60px; font-size:28px">
+                </div>
+                <div class="row">
+                    <label>°F</label>
+                    <input id="fahrenheit" type="text" style="width:365px; height:60px; font-size:28px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ========= ШКАЛА МЕТРА ========= -->
+<div style="margin-top: 60px; width: 100%;">
+    <h2 style="text-align: center; color: white; font-size: 64px;">📏 Длина</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 36px; justify-content: center; align-items: flex-end;" id="meter-scale"></div>
+</div>
+<script>
+    (function() {
+        const units = [
+            { name: "микро", sym: "мкм", factor: 1000000 },
+            { name: "милли", sym: "мм", factor: 10000 },
+            { name: "санти", sym: "см", factor: 100},
+            { name: "деци", sym: "дм", factor: 10 },
+            { name: "метр", sym: "м", factor: 1 },
+            { name: "дека", sym: "дам", factor: 0.1 },
+            { name: "гекто", sym: "гм", factor: 0.001 },
+            { name: "кило", sym: "км", factor: 0.0001 },
+            { name: "мега", sym: "Мм", factor:  0.00001 },
+            { name: "гига", sym: "Гм", factor: 0.000001 },
+            { name: "тера", sym: "Тм", factor: 0.0000001  }
+        ];
+
+        const container = document.getElementById("meter-scale");
+        if (!container) return;
+        const inputs = {};
+
+        // Создаём поля
+        units.forEach(unit => {
+            const div = document.createElement("div");
+            div.style.textAlign = "center";
+            div.style.minWidth = "80px";
+
+            const input = document.createElement("input");
+            input.type = "number";
+            input.placeholder = "0";
+            input.style.width = "120px";
+            input.style.padding = "10px";
+            input.style.fontSize = "28px";
+            input.style.textAlign = "center";
+            input.style.borderRadius = "";
+            input.style.border = "none";
+            input.style.background = "rgba(255,255,255,0.9)";
+
+            const label = document.createElement("label");
+            label.textContent = `${unit.name} (${unit.sym})`;
+            label.style.display = "block";
+            label.style.fontSize = "24px";
+            label.style.marginTop = "10x";
+            label.style.color = "white";
+
+            div.appendChild(input);
+            div.appendChild(label);
+            container.appendChild(div);
+            inputs[unit.sym] = { input, factor: unit.factor };
+        });
+
+        // Логика пересчёта
+        function updateAll(sourceSym, sourceValue) {
+            const sourceFactor = inputs[sourceSym].factor;
+            const meters = sourceValue / sourceFactor;
+            for (let sym in inputs) {
+                if (sym !== sourceSym) {
+                    const target = inputs[sym];
+                    target.input.value = meters * target.factor;
+                }
+            }
+        }
+
+        // Навешиваем обработчики
+        for (let sym in inputs) {
+            const inp = inputs[sym].input;
+            inp.addEventListener("input", (e) => {
+                let val = parseFloat(e.target.value);
+                if (isNaN(val)) return;
+                updateAll(sym, val);
+            });
+        }
+    })();
+</script>
+
+    <script>
+        let a = document.getElementById("kmh");
+        let b = document.getElementById("ms");
+        let c = document.getElementById("sec");
+        let d = document.getElementById("hour");
+        a.oninput = () => b.value = a.value / 3.6;
+        b.oninput = () => a.value = b.value * 3.6;
+        c.oninput = () => d.value = c.value / 3600;
+        d.oninput = () => c.value = d.value * 3600;
+        let celsius = document.getElementById("celsius");
+        let fahrenheit = document.getElementById("fahrenheit");
+        celsius.oninput = () => fahrenheit.value = (celsius.value * 9/5 + 32);
+        fahrenheit.oninput = () => celsius.value = (fahrenheit.value - 32) * 5/9;
+    </script>
+
+</body>
+</html>
