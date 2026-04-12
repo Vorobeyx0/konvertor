@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="icon" type="image/x-icon" href="favicon.png">
@@ -11,8 +10,6 @@
             font-family: Arial, sans-serif;
             margin-left: 60px;
         }
-
-        /* Анимация фона (движущийся блик) */
         body::before {
             content: '';
             position: fixed;
@@ -26,37 +23,17 @@
             z-index: -1;
         }
         @keyframes moveBg {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translate(10%, 5%) scale(1.3);
-                opacity: 0.8;
-            }
+            0% { transform: translate(0,0) scale(1); opacity: 0.4; }
+            100% { transform: translate(10%,5%) scale(1.3); opacity: 0.8; }
         }
-
-        /* Анимация появления карточек */
-        .card {
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
+        .card { animation: fadeSlideUp 0.5s ease forwards; opacity: 0; }
         @keyframes fadeSlideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-        /* Задержки для каждой карточки */
         .card:nth-child(1) { animation-delay: 0.1s; }
         .card:nth-child(2) { animation-delay: 0.3s; }
         .card:nth-child(3) { animation-delay: 0.5s; }
-
-        /* --- Остальные стили (без изменений) --- */
         h1 {
             text-align: center;
             color: white;
@@ -74,17 +51,13 @@
             border: none;
             outline: none;
         }
-        .row {
-            margin: 20px 0;
-        }
+        .row { margin: 20px 0; }
         label {
             color: white;
             font-size: 30px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        .container {
-            margin: 20px 0;
-        }
+        .container { margin: 20px 0; }
         .column {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
@@ -106,131 +79,115 @@
 
     <h1>Перевод физических величин</h1>
 
-    <!-- Контейнер для трёх карточек. Каждой карточке добавлен класс card -->
     <div style="display: flex; gap: 100px; flex-wrap: wrap; justify-content: center;">
-        <!-- Карточка 1: Скорость -->
         <div class="column card">
             <div>
                 <h2><span class="emod">🏃‍♂️‍➡️</span>Скорость</h2>
-                <div class="row">
-                    <label>км/ч</label>
-                    <input id="kmh" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
-                </div>
-                <div class="row">
-                    <label>м /с</label>
-                    <input id="ms" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
-                </div>
+                <div class="row"><label>км/ч</label><input id="kmh" type="text" style="width:365px; height:60px; font-size:28px"></div>
+                <div class="row"><label>м /с</label><input id="ms" type="text" style="width:365px; height:60px; font-size:28px"></div>
             </div>
         </div>
-
-        <!-- Карточка 2: Время -->
         <div class="column card">
             <div>
                 <h2><span class="emod">⏱️</span>Время</h2>
-                <div class="container">
-                    <label>Сек </label>
-                    <input id="sec" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
-                </div>
-                <div class="container">
-                    <label>Час</label>
-                    <input id="hour" type="text" style="width:365px; height:60px; font-size:28px" placeholder="">
-                </div>
+                <div class="container"><label>Сек </label><input id="sec" type="text" style="width:365px; height:60px; font-size:28px"></div>
+                <div class="container"><label>Час</label><input id="hour" type="text" style="width:365px; height:60px; font-size:28px"></div>
             </div>
         </div>
-
-        <!-- Карточка 3: Температура -->
         <div class="column card">
             <div>
                 <h2><span class="emod">🌡️</span>Температура</h2>
-                <div class="row">
-                    <label>°C</label>
-                    <input id="celsius" type="text" style="width:365px; height:60px; font-size:28px">
-                </div>
-                <div class="row">
-                    <label>°F</label>
-                    <input id="fahrenheit" type="text" style="width:365px; height:60px; font-size:28px">
-                </div>
+                <div class="row"><label>°C</label><input id="celsius" type="text" style="width:365px; height:60px; font-size:28px"></div>
+                <div class="row"><label>°F</label><input id="fahrenheit" type="text" style="width:365px; height:60px; font-size:28px"></div>
             </div>
         </div>
     </div>
-    <!-- ========= ШКАЛА МЕТРА ========= -->
-<div style="margin-top: 60px; width: 100%;">
-    <h2 style="text-align: center; color: white; font-size: 64px;">📏 Длина</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 36px; justify-content: center; align-items: flex-end;" id="meter-scale"></div>
-</div>
-<script>
-    (function() {
-        const units = [
-            { name: "микро", sym: "мкм", factor: 1000000 },
-            { name: "милли", sym: "мм", factor: 10000 },
-            { name: "санти", sym: "см", factor: 100},
-            { name: "деци", sym: "дм", factor: 10 },
-            { name: "метр", sym: "м", factor: 1 },
-            { name: "дека", sym: "дам", factor: 0.1 },
-            { name: "гекто", sym: "гм", factor: 0.001 },
-            { name: "кило", sym: "км", factor: 0.0001 },
-            { name: "мега", sym: "Мм", factor:  0.00001 },
-            { name: "гига", sym: "Гм", factor: 0.000001 },
-            { name: "тера", sym: "Тм", factor: 0.0000001  }
-        ];
 
-        const container = document.getElementById("meter-scale");
-        if (!container) return;
-        const inputs = {};
+    <div style="margin-top: 60px; width: 100%;">
+        <h2 style="text-align: center; color: white; font-size: 64px;">📏 Длина</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 36px; justify-content: center; align-items: flex-end;" id="meter-scale"></div>
+    </div>
 
-        // Создаём поля
-        units.forEach(unit => {
-            const div = document.createElement("div");
-            div.style.textAlign = "center";
-            div.style.minWidth = "80px";
+    <script>
+        (function() {
+            const units = [
+                { name: "микро", sym: "мкм", factor: 1000000 },
+                { name: "милли", sym: "мм", factor: 10000 },
+                { name: "санти", sym: "см", factor: 100},
+                { name: "деци", sym: "дм", factor: 10 },
+                { name: "метр", sym: "м", factor: 1 },
+                { name: "дека", sym: "дам", factor: 0.1 },
+                { name: "гекто", sym: "гм", factor: 0.001 },
+                { name: "кило", sym: "км", factor: 0.0001 },
+                { name: "мега", sym: "Мм", factor:  0.00001 },
+                { name: "гига", sym: "Гм", factor: 0.000001 },
+                { name: "тера", sym: "Тм", factor: 0.0000001  }
+            ];
 
-            const input = document.createElement("input");
-            input.type = "number";
-            input.placeholder = "0";
-            input.style.width = "110px";
-            input.style.padding = "10px";
-            input.style.fontSize = "28px";
-            input.style.textAlign = "center";
-            input.style.borderRadius = "";
-            input.style.border = "none";
-            input.style.background = "rgba(255,255,255,0.9)";
+            const container = document.getElementById("meter-scale");
+            if (!container) return;
+            const inputs = {};
 
-            const label = document.createElement("label");
-            label.textContent = `${unit.name} (${unit.sym})`;
-            label.style.display = "block";
-            label.style.fontSize = "24px";
-            label.style.marginTop = "1x";
-            label.style.color = "white";
+            units.forEach(unit => {
+                const div = document.createElement("div");
+                div.style.textAlign = "center";
+                div.style.minWidth = "80px";
 
-            div.appendChild(input);
-            div.appendChild(label);
-            container.appendChild(div);
-            inputs[unit.sym] = { input, factor: unit.factor };
-        });
+                const input = document.createElement("input");
+                input.type = "number";
+                input.placeholder = "0";
+                input.style.width = "110px";
+                input.style.padding = "10px";
+                input.style.fontSize = "28px";
+                input.style.textAlign = "center";
+                input.style.borderRadius = "12px";
+                input.style.background = "rgba(255,255,255,0.9)";
 
-        // Логика пересчёта
-        function updateAll(sourceSym, sourceValue) {
-            const sourceFactor = inputs[sourceSym].factor;
-            const meters = sourceValue / sourceFactor;
-            for (let sym in inputs) {
-                if (sym !== sourceSym) {
-                    const target = inputs[sym];
-                    target.input.value = meters * target.factor;
+                // Окантовка для метра (золотая рамка)
+                if (unit.sym === "м") {
+                    input.style.border = "3px solid gold";
+                    input.style.boxShadow = "0 0 6px gold";
+                    input.style.fontWeight = "bold";
+                } else {
+                    input.style.border = "1px solid rgba(255,255,255,0.3)";
+                }
+
+                const label = document.createElement("label");
+                label.textContent = `${unit.name} (${unit.sym})`;
+                label.style.display = "block";
+                label.style.fontSize = "24px";
+                label.style.marginTop = "5px";
+                label.style.color = "white";
+
+                div.appendChild(input);
+                div.appendChild(label);
+                container.appendChild(div);
+                inputs[unit.sym] = { input, factor: unit.factor };
+            });
+
+            // Функция пересчёта с округлением до 6 знаков
+            function updateAll(sourceSym, sourceValue) {
+                const sourceFactor = inputs[sourceSym].factor;
+                const meters = sourceValue / sourceFactor;
+                for (let sym in inputs) {
+                    if (sym !== sourceSym) {
+                        const target = inputs[sym];
+                        let value = meters * target.factor;
+                        target.input.value = parseFloat(value.toFixed(6));
+                    }
                 }
             }
-        }
 
-        // Навешиваем обработчики
-        for (let sym in inputs) {
-            const inp = inputs[sym].input;
-            inp.addEventListener("input", (e) => {
-                let val = parseFloat(e.target.value);
-                if (isNaN(val)) return;
-                updateAll(sym, val);
-            });
-        }
-    })();
-</script>
+            for (let sym in inputs) {
+                const inp = inputs[sym].input;
+                inp.addEventListener("input", (e) => {
+                    let val = parseFloat(e.target.value);
+                    if (isNaN(val)) return;
+                    updateAll(sym, val);
+                });
+            }
+        })();
+    </script>
 
     <script>
         let a = document.getElementById("kmh");
