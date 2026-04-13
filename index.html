@@ -89,129 +89,151 @@
     <h1>Перевод физических величин</h1>
 
     <div style="display: flex; gap: 100px; flex-wrap: wrap; justify-content: center;">
-        <div class="column card">
-            <div>
-                <h2><span class="emod">🏃‍♂️‍➡️</span>Скорость</h2>
-                <div class="row"><label>км/ч</label><input id="kmh" type="text" style="width:365px; height:60px; font-size:28px"></div>
-                <div class="row"><label>м /с</label><input id="ms" type="text" style="width:365px; height:60px; font-size:28px"></div>
-            </div>
-        </div>
-        <div class="column card">
-            <div>
-                <h2><span class="emod">⏱️</span>Время</h2>
-                <div class="container"><label>Сек </label><input id="sec" type="text" style="width:365px; height:60px; font-size:28px"></div>
-                <div class="container"><label>Час</label><input id="hour" type="text" style="width:365px; height:60px; font-size:28px"></div>
-            </div>
-        </div>
-        <div class="column card">
-            <div>
-                <h2><span class="emod">🌡️</span>Температура</h2>
-                <div class="row"><label>°C</label><input id="celsius" type="text" style="width:365px; height:60px; font-size:28px"></div>
-                <div class="row"><label>°F</label><input id="fahrenheit" type="text" style="width:365px; height:60px; font-size:28px"></div>
-            </div>
+   <div style="display: flex; gap: 100px; flex-wrap: wrap; justify-content: center;">
+    <!-- Скорость -->
+    <div class="column card">
+        <div>
+            <h2><span class="emod">🏃‍♂️‍➡️</span>Скорость</h2>
+            <div class="row"><label>км/ч</label><input id="kmh" type="text" style="width:365px; height:60px; font-size:28px"></div>
+            <div class="row"><label>м /с</label><input id="ms" type="text" style="width:365px; height:60px; font-size:28px"></div>
         </div>
     </div>
 
+    <!-- Время -->
+    <div class="column card">
+        <div>
+            <h2><span class="emod">⏱️</span>Время</h2>
+            <div class="container"><label>Сек </label><input id="sec" type="text" style="width:365px; height:60px; font-size:28px"></div>
+            <div class="container"><label>Час</label><input id="hour" type="text" style="width:365px; height:60px; font-size:28px"></div>
+        </div>
+    </div>
+
+    <!-- Температура -->
+    <div class="column card">
+        <div>
+            <h2><span class="emod">🌡️</span>Температура</h2>
+            <div class="row"><label>°C</label><input id="celsius" type="text" style="width:365px; height:60px; font-size:28px"></div>
+            <div class="row"><label>°F</label><input id="fahrenheit" type="text" style="width:365px; height:60px; font-size:28px"></div>
+        </div>
+    </div>
+
+    <!-- Плотность -->
+    <div class="column card">
+        <div>
+            <h2><span class="emod">⚖️</span>Плотность</h2>
+            <div class="row"><label>г/см³</label><input id="gcm" type="text" style="width:365px; height:60px; font-size:28px"></div>
+            <div class="row"><label>кг/м³</label><input id="kgm" type="text" style="width:365px; height:60px; font-size:28px"></div>
+        </div>
+    </div>
+</div>
+    
     <div style="margin-top: 60px; width: 100%;">
         <h2 style="text-align: center; color: white; font-size: 64px;">📏 Длина</h2>
         <div style="display: flex; flex-wrap: wrap; gap: 36px; justify-content: center; align-items: flex-end;" id="meter-scale"></div>
-    </div>
+ 
 
-    <script>
-        (function() {
-            const units = [
-                { name: "микро", sym: "мкм", factor: 1000000 },
-                { name: "милли", sym: "мм", factor: 10000 },
-                { name: "санти", sym: "см", factor: 100},
-                { name: "деци", sym: "дм", factor: 10 },
-                { name: "метр", sym: "м", factor: 1 },
-                { name: "дека", sym: "дам", factor: 0.1 },
-                { name: "гекто", sym: "гм", factor: 0.001 },
-                { name: "кило", sym: "км", factor: 0.0001 },
-                { name: "мега", sym: "Мм", factor:  0.00001 },
-                { name: "гига", sym: "Гм", factor: 0.000001 },
-                { name: "тера", sym: "Тм", factor: 0.0000001  }
-            ];
+    <!-- ШКАЛА ДЛИНЫ -->
+<script>
+    (function() {
+        const units = [
+            { name: "микро", sym: "мкм", factor: 1000000 },
+            { name: "милли", sym: "мм", factor: 10000 },
+            { name: "санти", sym: "см", factor: 100},
+            { name: "деци", sym: "дм", factor: 10 },
+            { name: "метр", sym: "м", factor: 1 },
+            { name: "дека", sym: "да", factor: 0.1 },
+            { name: "гекто", sym: "г", factor: 0.001 },
+            { name: "кило", sym: "км", factor: 0.0001 },
+            { name: "мега", sym: "М", factor:  0.00001 },
+            { name: "гига", sym: "Г", factor: 0.000001 },
+            { name: "тера", sym: "Т", factor: 0.0000001  }
+        ];
 
-            const container = document.getElementById("meter-scale");
-            if (!container) return;
-            const inputs = {};
+        const container = document.getElementById("meter-scale");
+        if (!container) return;
+        const inputs = {};
 
-            units.forEach(unit => {
-                const div = document.createElement("div");
-                div.style.textAlign = "center";
-                div.style.minWidth = "80px";
+        units.forEach(unit => {
+            const div = document.createElement("div");
+            div.style.textAlign = "center";
+            div.style.minWidth = "80px";
 
-                const input = document.createElement("input");
-                input.type = "number";
-                input.placeholder = "0";
-                input.style.width = "110px";
-                input.style.padding = "10px";
-                input.style.fontSize = "28px";
-                input.style.textAlign = "center";
-                input.style.borderRadius = "12px";
-                input.style.background = "rgba(255,255,255,0.9)";
+            const input = document.createElement("input");
+            input.type = "number";
+            input.placeholder = "0";
+            input.style.width = "110px";
+            input.style.padding = "10px";
+            input.style.fontSize = "28px";
+            input.style.textAlign = "center";
+            input.style.borderRadius = "12px";
+            input.style.background = "rgba(255,255,255,0.9)";
 
-                // Окантовка для метра (золотая рамка)
-                if (unit.sym === "м") {
-                    input.style.border = "3px solid gold";
-                    input.style.boxShadow = "0 0 6px gold";
-                    input.style.fontWeight = "bold";
-                } else {
-                    input.style.border = "1px solid rgba(255,255,255,0.3)";
-                }
-
-                const label = document.createElement("label");
-                label.textContent = `${unit.name} (${unit.sym})`;
-                label.style.display = "block";
-                label.style.fontSize = "24px";
-                label.style.marginTop = "5px";
-                label.style.color = "white";
-
-                div.appendChild(input);
-                div.appendChild(label);
-                container.appendChild(div);
-                inputs[unit.sym] = { input, factor: unit.factor };
-            });
-
-            // Функция пересчёта с округлением до 6 знаков
-            function updateAll(sourceSym, sourceValue) {
-                const sourceFactor = inputs[sourceSym].factor;
-                const meters = sourceValue / sourceFactor;
-                for (let sym in inputs) {
-                    if (sym !== sourceSym) {
-                        const target = inputs[sym];
-                        let value = meters * target.factor;
-                        target.input.value = parseFloat(value.toFixed(6));
-                    }
-                }
+            if (unit.sym === "м") {
+                input.style.border = "3px solid gold";
+                input.style.boxShadow = "0 0 6px gold";
+                input.style.fontWeight = "bold";
+            } else {
+                input.style.border = "1px solid rgba(255,255,255,0.3)";
             }
 
+            const label = document.createElement("label");
+            label.textContent = `${unit.name} (${unit.sym})`;
+            label.style.display = "block";
+            label.style.fontSize = "24px";
+            label.style.marginTop = "5px";
+            label.style.color = "white";
+
+            div.appendChild(input);
+            div.appendChild(label);
+            container.appendChild(div);
+            inputs[unit.sym] = { input, factor: unit.factor };
+        });
+
+        function updateAll(sourceSym, sourceValue) {
+            const sourceFactor = inputs[sourceSym].factor;
+            const meters = sourceValue / sourceFactor;
             for (let sym in inputs) {
-                const inp = inputs[sym].input;
-                inp.addEventListener("input", (e) => {
-                    let val = parseFloat(e.target.value);
-                    if (isNaN(val)) return;
-                    updateAll(sym, val);
-                });
+                if (sym !== sourceSym) {
+                    const target = inputs[sym];
+                    let value = meters * target.factor;
+                    target.input.value = parseFloat(value.toFixed(6));
+                }
             }
-        })();
-    </script>
+        }
 
-    <script>
-        let a = document.getElementById("kmh");
-        let b = document.getElementById("ms");
-        let c = document.getElementById("sec");
-        let d = document.getElementById("hour");
-        a.oninput = () => b.value = a.value / 3.6;
-        b.oninput = () => a.value = b.value * 3.6;
-        c.oninput = () => d.value = c.value / 3600;
-        d.oninput = () => c.value = d.value * 3600;
-        let celsius = document.getElementById("celsius");
-        let fahrenheit = document.getElementById("fahrenheit");
-        celsius.oninput = () => fahrenheit.value = (celsius.value * 9/5 + 32);
-        fahrenheit.oninput = () => celsius.value = (fahrenheit.value - 32) * 5/9;
-    </script>
+        for (let sym in inputs) {
+            const inp = inputs[sym].input;
+            inp.addEventListener("input", (e) => {
+                let val = parseFloat(e.target.value);
+                if (isNaN(val)) return;
+                updateAll(sym, val);
+            });
+        }
+    })();
+</script>
+
+<!-- ОСНОВНЫЕ КОНВЕРТЕРЫ С ОКРУГЛЕНИЕМ -->
+<script>
+    let a = document.getElementById("kmh");
+    let b = document.getElementById("ms");
+    let c = document.getElementById("sec");
+    let d = document.getElementById("hour");
+    let celsius = document.getElementById("celsius");
+    let fahrenheit = document.getElementById("fahrenheit");
+
+    function roundValue(val) {
+        return parseFloat(Number(val).toFixed(6));
+    }
+
+    a.oninput = () => b.value = roundValue(a.value / 3.6);
+    b.oninput = () => a.value = roundValue(b.value * 3.6);
+    c.oninput = () => d.value = roundValue(c.value / 3600);
+    d.oninput = () => c.value = roundValue(d.value * 3600);
+    celsius.oninput = () => fahrenheit.value = roundValue((celsius.value * 9/5 + 32));
+    fahrenheit.oninput = () => celsius.value = roundValue((fahrenheit.value - 32) * 5/9);
+    kgm.oninput = () => gcm.value = roundValue(kgm.value / 1000);
+    gcm.oninput = () => kgm.value = roundValue(gcm.value * 1000);
+</script>
 
 </body>
 </html>      
