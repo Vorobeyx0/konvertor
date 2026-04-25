@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-57LQQWJ4FB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-57LQQWJ4FB');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-57LQQWJ4FB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-57LQQWJ4FB');
+    </script>
     <link rel="icon" type="image/x-icon" href="favicon.png">
     <meta charset="UTF-8">
     <title>Конвертор</title>
@@ -88,30 +87,79 @@
             transition: transform 0.2s ease;
         }
         .si-field {
-    border: 3px solid gold;
-    box-shadow: 0 0 6px gold;
-    background: rgba(255, 255, 255, 0.95);
-    font-weight: bold;
-}
+            border: 3px solid gold;
+            box-shadow: 0 0 6px gold;
+            background: rgba(255, 255, 255, 0.95);
+            font-weight: bold;
+        }
+        /* Стили для блока длины/давления */
+        .meter-scale-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .selector-label {
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        #quantitySelect {
+            font-size: 22px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            background: white;
+            border: none;
+            margin-bottom: 20px;
+        }
+        .units-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .unit-card {
+            text-align: center;
+            min-width: 100px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 16px;
+        }
+        .unit-card label {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .unit-card input {
+            width: 120px;
+            height: 50px;
+            font-size: 22px;
+            border-radius: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <h1>Перевод физических величин</h1>
     <div style="text-align: center; margin: 20px 0;">
-    <button onclick="clearAll()" style="background: #ff7e5e; color: white; font-size: 24px; padding: 12px 30px; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s;">
-        🧹 Очистить все поля
-    </button>
-</div>
+        <button onclick="clearAll()" style="background: #ff7e5e; color: white; font-size: 24px; padding: 12px 30px; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s;">
+            🧹 Очистить все поля
+        </button>
+    </div>
 
     <div style="display: flex; gap: 25px; flex-wrap: wrap; justify-content: center;">
    
         <!-- Скорость -->
         <div class="column card">
             <div>
-                <h2><span class="emod">🏃‍♂️‍➡️</span>Скорость</h2>
+                <h2><span class="emod">🏃‍♂️➡️</span>Скорость</h2>
                 <div class="row"><label>м/с</label><input id="ms" type="text" class="si-field" style="width:300px; height:60px; font-size:28px"></div>
                 <div class="row"><label>км/ч</label><input id="kmh" type="text" style="width:300px; height:60px; font-size:28px"></div>
+                <div class="row"><label>км/c</label><input id="kms" type="text" style="width:300px; height:60px; font-size:28px"></div>
+                
             </div>
         </div>
 
@@ -119,7 +167,7 @@
         <div class="column card">
             <div>
                 <h2><span class="emod">⏱️</span>Время</h2>
-                <div class="container"><label>Сек </label><input id="sec" type="text" class="si-field" style="width:300px; height:60px; font-size:28pxp;"></div>
+                <div class="container"><label>Сек </label><input id="sec" type="text" class="si-field" style="width:300px; height:60px; font-size:28px;"></div>
                 <div class="container"><label>Мин</label><input id="min" type="text" style="width:300px; height:60px; font-size:28px"></div>
                 <div class="container"><label>Час</label><input id="hour" type="text" style="width:300px; height:60px; font-size:28px"></div>
             </div>
@@ -141,105 +189,134 @@
                 <h2><span class="emod">⚖️</span>Плотность</h2>
                 <div class="row"><label>кг/м³</label><input id="kgm" type="text" class="si-field" style="width:300px; height:60px; font-size:28px"></div>
                 <div class="row"><label>г/см³</label><input id="gcm" type="text" style="width:300px; height:60px; font-size:28px"></div>
-                 
+                <div class="row"><label>т/м³</label><input id="tm" type="text" style="width:300px; height:60px; font-size:28px"></div>
             </div>
         </div>
     </div>
     
-    <div style="margin-top: 50px; width: 100%;">
-        <h2 style="text-align: center; color: white; font-size: 64px;">📏 Длина</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 36px; justify-content: center; align-items: flex-end;" id="meter-scale"></div>
+    <!-- Блок с выпадающим списком (Длина / Давление) -->
+    <div class="meter-scale-container">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span class="selector-label">📏 Выберите величину:</span>
+            <select id="quantitySelect">
+                <option value="length">Длина (мкм ... Т)</option>
+                <option value="pressure">Давление (Па ... )</option>
+            </select>
+        </div>
+        <div id="unitsGrid" class="units-grid"></div>
     </div>
 
+    <button onclick="clearAll()" style="background: #ff7e5e; color: white; font-size: 24px; padding: 12px 30px; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s;">
+            
+        Отзывы
+        </button>
     
 
-    <!-- ШКАЛА ДЛИНЫ -->
     <script>
-        (function() {
-            const units = [
-                { name: "микро", sym: "мкм", factor: 1000000 },
-                { name: "милли", sym: "мм", factor: 10000 },
-                { name: "санти", sym: "см", factor: 100},
-                { name: "деци", sym: "дм", factor: 10 },
-                { name: "метр", sym: "м", factor: 1 },
-                { name: "дека", sym: "да", factor: 0.1 },
-                { name: "гекто", sym: "г", factor: 0.001 },
-                { name: "кило", sym: "км", factor: 0.0001 },
-                { name: "мега", sym: "М", factor:  0.00001 },
-                { name: "гига", sym: "Г", factor: 0.000001 },
-                { name: "тера", sym: "Т", factor: 0.0000001  }
-            ];
+        // === ДАННЫЕ ДЛЯ ДЛИНЫ (11 единиц) ===
+        const lengthUnits = [
+            { name: "микро (мкм)", factor: 1e-6 },
+            { name: "милли (мм)", factor: 0.001 },
+            { name: "санти (см)", factor: 0.01 },
+            { name: "деци (дм)", factor: 0.1 },
+            { name: "метр (м)", factor: 1 },
+            { name: "дека (да)", factor: 10 },
+            { name: "гекто (г)", factor: 100 },
+            { name: "кило (к)", factor: 1000 },
+            { name: "мега (М)", factor: 1e6 },
+            { name: "гига (Г)", factor: 1e9 },
+            { name: "тера (Т)", factor: 1e12 }
+        ];
 
-            const container = document.getElementById("meter-scale");
-            if (!container) return;
-            const inputs = {};
+        // === ДАННЫЕ ДЛЯ ДАВЛЕНИЯ (11 единиц) ===
+        const pressureUnits = [
+            { name: "Паскаль (Па)", factor: 1 },
+            { name: "Паскаль (Па)", factor: 1 },
+            { name: "Паскаль (Па)", factor: 1 },
+            { name: "Паскаль (Па)", factor: 1 },
+            { name: "Паскаль (Па)", factor: 1 },
+            { name: "Паскаль (Па)", factor: 1 },
+           
+        ];
 
-            units.forEach(unit => {
-                const div = document.createElement("div");
-                div.style.textAlign = "center";
-                div.style.minWidth = "80px";
+        let currentUnits = lengthUnits; // по умолчанию Длина
+        let currentInputs = []; // массив для хранения ссылок на input'ы
 
+        // Функция отрисовки 11 полей
+        function renderUnits(units) {
+            const container = document.getElementById("unitsGrid");
+            container.innerHTML = "";
+            currentInputs = [];
+            
+            units.forEach((unit, index) => {
+                const unitDiv = document.createElement("div");
+                unitDiv.className = "unit-card";
+                
+                const label = document.createElement("label");
+                label.textContent = unit.name;
+                
                 const input = document.createElement("input");
                 input.type = "number";
                 input.placeholder = "0";
-                input.style.width = "110px";
-                input.style.padding = "10px";
-                input.style.fontSize = "28px";
-                input.style.textAlign = "center";
-                input.style.borderRadius = "12px";
-                input.style.background = "rgba(255,255,255,0.9)";
-
-                if (unit.sym === "м") {
+                input.id = `unit_input_${index}`;
+                
+                // Подсветка базовой единицы (метр для длины, паскаль для давления)
+                if ((currentUnits === lengthUnits && unit.name === "метр (м)") ||
+                    (currentUnits === pressureUnits && unit.name === "Паскаль (Па)")) {
                     input.style.border = "3px solid gold";
                     input.style.boxShadow = "0 0 6px gold";
                     input.style.fontWeight = "bold";
-                } else {
-                    input.style.border = "1px solid rgba(255,255,255,0.3)";
                 }
-
-                const label = document.createElement("label");
-                label.textContent = `${unit.name} (${unit.sym})`;
-                label.style.display = "block";
-                label.style.fontSize = "24px";
-                label.style.marginTop = "5px";
-                label.style.color = "white";
-
-                div.appendChild(input);
-                div.appendChild(label);
-                container.appendChild(div);
-                inputs[unit.sym] = { input, factor: unit.factor };
+                
+                input.addEventListener("input", (e) => updateAll(index, parseFloat(e.target.value)));
+                
+                unitDiv.appendChild(label);
+                unitDiv.appendChild(input);
+                container.appendChild(unitDiv);
+                currentInputs.push({ input, factor: unit.factor, name: unit.name });
             });
-
-            function updateAll(sourceSym, sourceValue) {
-                const sourceFactor = inputs[sourceSym].factor;
-                const meters = sourceValue / sourceFactor;
-                for (let sym in inputs) {
-                    if (sym !== sourceSym) {
-                        const target = inputs[sym];
-                        let value = meters * target.factor;
-                        target.input.value = parseFloat(value.toFixed(6));
-                    }
+        }
+        
+        // Обновление всех полей при изменении одного
+        function updateAll(changedIndex, changedValue) {
+            if (isNaN(changedValue)) return;
+            
+            const changedFactor = currentInputs[changedIndex].factor;
+            const baseValue = changedValue * changedFactor;
+            
+            for (let i = 0; i < currentInputs.length; i++) {
+                if (i !== changedIndex) {
+                    const newValue = baseValue / currentInputs[i].factor;
+                    currentInputs[i].input.value = parseFloat(newValue.toFixed(10));
                 }
             }
-
-            for (let sym in inputs) {
-                const inp = inputs[sym].input;
-                inp.addEventListener("input", (e) => {
-                    let val = parseFloat(e.target.value);
-                    if (isNaN(val)) return;
-                    updateAll(sym, val);
-                });
+        }
+        
+        // Очистка всех полей в динамическом блоке
+        function clearDynamicFields() {
+            for (let i = 0; i < currentInputs.length; i++) {
+                currentInputs[i].input.value = "";
             }
-        })();
-    </script>
-
-    <!-- ОСНОВНЫЕ КОНВЕРТЕРЫ С ОКРУГЛЕНИЕМ -->
-    <script>
+        }
+        
+        // Переключение между длиной и давлением
+        document.getElementById("quantitySelect").addEventListener("change", (e) => {
+            if (e.target.value === "length") {
+                currentUnits = lengthUnits;
+            } else {
+                currentUnits = pressureUnits;
+            }
+            renderUnits(currentUnits);
+        });
+        
+        // === ОСНОВНЫЕ КОНВЕРТЕРЫ (Скорость, Время, Температура, Плотность) ===
         let a = document.getElementById("kmh");
         let b = document.getElementById("ms");
+        let y = document.getElementById("kms");
         let c = document.getElementById("sec");
         let d = document.getElementById("hour");
         let e = document.getElementById("min");
+        let z = document.getElementById("tm");
         let celsius = document.getElementById("celsius");
         let fahrenheit = document.getElementById("fahrenheit");
         let kelvin = document.getElementById("kelvin");
@@ -251,56 +328,112 @@
         }
 
         // Скорость
-        a.oninput = () => b.value = roundValue(a.value / 3.6);
-        b.oninput = () => a.value = roundValue(b.value * 3.6);
+          let kmh = document.getElementById("kmh");
+let ms = document.getElementById("ms");
+let kms = document.getElementById("kms");
+
+if (kmh && ms && kms) {
+    kmh.oninput = () => {
+        if (kmh.value) {
+            ms.value = roundValue(kmh.value / 3.6);
+            kms.value = roundValue(kmh.value / 3600);
+        } else { ms.value = ""; kms.value = ""; }
+    };
+    ms.oninput = () => {
+        if (ms.value) {
+            kmh.value = roundValue(ms.value * 3.6);
+            kms.value = roundValue(ms.value / 1000);
+        } else { kmh.value = ""; kms.value = ""; }
+    };
+    kms.oninput = () => {
+        if (kms.value) {
+            kmh.value = roundValue(kms.value * 3600);
+            ms.value = roundValue(kms.value * 1000);
+        } else { kmh.value = ""; ms.value = ""; }
+    };
+}
 
         // Время
-        c.oninput = () => {
-            d.value = roundValue(c.value / 3600);
-            e.value = roundValue(c.value / 60);
-        };
-        d.oninput = () => {
-            c.value = roundValue(d.value * 3600);
-            e.value = roundValue(d.value * 60);
-        };
-        e.oninput = () => {
-            c.value = roundValue(e.value * 60);
-            d.value = roundValue(e.value / 60);
-        };
+        if (c && d && e) {
+            c.oninput = () => {
+                if(c.value) {
+                    d.value = roundValue(c.value / 3600);
+                    e.value = roundValue(c.value / 60);
+                } else { d.value = ""; e.value = ""; }
+            };
+            d.oninput = () => {
+                if(d.value) {
+                    c.value = roundValue(d.value * 3600);
+                    e.value = roundValue(d.value * 60);
+                } else { c.value = ""; e.value = ""; }
+            };
+            e.oninput = () => {
+                if(e.value) {
+                    c.value = roundValue(e.value * 60);
+                    d.value = roundValue(e.value / 60);
+                } else { c.value = ""; d.value = ""; }
+            };
+        }
 
         // Температура
-        celsius.oninput = () => {
-            fahrenheit.value = roundValue((celsius.value * 9/5 + 32));
-            kelvin.value = roundValue(parseFloat(celsius.value) + 273.15);
-        };
-        fahrenheit.oninput = () => {
-            celsius.value = roundValue((fahrenheit.value - 32) * 5/9);
-            kelvin.value = roundValue((fahrenheit.value - 32) * 5/9 + 273.15);
-        };
-        kelvin.oninput = () => {
-            celsius.value = roundValue(kelvin.value - 273.15);
-            fahrenheit.value = roundValue((kelvin.value - 273.15) * 9/5 + 32);
-        };
+        if (celsius && fahrenheit && kelvin) {
+            celsius.oninput = () => {
+                if(celsius.value) {
+                    fahrenheit.value = roundValue((parseFloat(celsius.value) * 9/5 + 32));
+                    kelvin.value = roundValue(parseFloat(celsius.value) + 273.15);
+                } else { fahrenheit.value = ""; kelvin.value = ""; }
+            };
+            fahrenheit.oninput = () => {
+                if(fahrenheit.value) {
+                    celsius.value = roundValue((parseFloat(fahrenheit.value) - 32) * 5/9);
+                    kelvin.value = roundValue((parseFloat(fahrenheit.value) - 32) * 5/9 + 273.15);
+                } else { celsius.value = ""; kelvin.value = ""; }
+            };
+            kelvin.oninput = () => {
+                if(kelvin.value) {
+                    celsius.value = roundValue(parseFloat(kelvin.value) - 273.15);
+                    fahrenheit.value = roundValue((parseFloat(kelvin.value) - 273.15) * 9/5 + 32);
+                } else { celsius.value = ""; fahrenheit.value = ""; }
+            };
+        }
 
         // Плотность
-        kgm.oninput = () => gcm.value = roundValue(kgm.value / 1000);
-        gcm.oninput = () => kgm.value = roundValue(gcm.value * 1000);
-
-        function clearAll() {
-    // Все поля скорости, времени, температуры, плотности
-    let fields = ["kmh", "ms", "sec", "min", "hour", "celsius", "fahrenheit", "kelvin", "kgm", "gcm"];
-    for (let i = 0; i < fields.length; i++) {
-        let field = document.getElementById(fields[i]);
-        if (field) field.value = "";
-    }
-    
-    // Поля шкалы длины (создаются динамически)
-    let meterInputs = document.querySelectorAll("#meter-scale input");
-    for (let i = 0; i < meterInputs.length; i++) {
-        meterInputs[i].value = "";
-    }
+       if (kgm && gcm && tm) {
+    kgm.oninput = () => {
+        if (kgm.value) {
+            gcm.value = roundValue(kgm.value / 1000);
+            tm.value = roundValue(kgm.value * 1000);
+        } else { gcm.value = ""; tm.value = ""; }
+    };
+    gcm.oninput = () => {
+        if (gcm.value) {
+            kgm.value = roundValue(ms.value * 1000);
+            tm.value = roundValue(ms.value * 100000);
+        } else { kgm.value = ""; tm.value = ""; }
+    };
+    tm.oninput = () => {
+        if (tm.value) {
+            kgm.value = roundValue(tm.value * 1000);
+            gcm.value = roundValue(tm.value / 1000);
+        } else { kgm.value = ""; gcm.value = ""; }
+    };
 }
-    </script>
+        
 
+        // Глобальная очистка всех полей
+        window.clearAll = function() {
+            // Очистка верхних полей
+            let fields = ["kmh", "ms", "sec", "min", "hour", "celsius", "fahrenheit", "kelvin", "kgm", "gcm"];
+            for (let i = 0; i < fields.length; i++) {
+                let field = document.getElementById(fields[i]);
+                if (field) field.value = "";
+            }
+            // Очистка динамических полей (длина/давление)
+            clearDynamicFields();
+        };
+        
+        // Инициализация (показываем длину)
+        renderUnits(lengthUnits);
+    </script>
 </body>
 </html>
