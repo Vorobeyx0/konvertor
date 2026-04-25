@@ -201,24 +201,26 @@
             <select id="quantitySelect">
                 <option value="length">Длина (мкм ... Т)</option>
                 <option value="pressure">Давление (Па ... )</option>
+                <option value="pressure">Работа (мкДж ... )</option>
+                <option value="pressure">Мощность(мкВт ... )</option>
             </select>
         </div>
         <div id="unitsGrid" class="units-grid"></div>
     </div>
 
-    <button onclick="clearAll()" style="background: #ff7e5e; color: white; font-size: 24px; padding: 12px 30px; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s;">
+    <button onclick="window.open('https://forms.gle/fwECLBTirWN52irK7')"  style="background: #ff7e5e; color: white; font-size: 24px; padding: 12px 30px; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s;">
             
-        Отзывы
+        Оnзывы
         </button>
     
 
     <script>
         // === ДАННЫЕ ДЛЯ ДЛИНЫ (11 единиц) ===
         const lengthUnits = [
-            { name: "микро (мкм)", factor: 1e-6 },
-            { name: "милли (мм)", factor: 0.001 },
-            { name: "санти (см)", factor: 0.01 },
-            { name: "деци (дм)", factor: 0.1 },
+            { name: "микро (мк)", factor: 1e-6 },
+            { name: "милли (м)", factor: 0.001 },
+            { name: "санти (с)", factor: 0.01 },
+            { name: "деци (д)", factor: 0.1 },
             { name: "метр (м)", factor: 1 },
             { name: "дека (да)", factor: 10 },
             { name: "гекто (г)", factor: 100 },
@@ -230,12 +232,17 @@
 
         // === ДАННЫЕ ДЛЯ ДАВЛЕНИЯ (11 единиц) ===
         const pressureUnits = [
+            { name: "микро (мк)", factor: 1e-6 },
+            { name: "милли (м)", factor: 0.001 },
+            { name: "санти (с)", factor: 0.01 },
+            { name: "деци (д)", factor: 0.1 },
             { name: "Паскаль (Па)", factor: 1 },
-            { name: "Паскаль (Па)", factor: 1 },
-            { name: "Паскаль (Па)", factor: 1 },
-            { name: "Паскаль (Па)", factor: 1 },
-            { name: "Паскаль (Па)", factor: 1 },
-            { name: "Паскаль (Па)", factor: 1 },
+            { name: "дека (да)", factor: 10 },
+            { name: "гекто (г)", factor: 100 },
+            { name: "кило (к)", factor: 1000 },
+            { name: "мега (М)", factor: 1e6 },
+            { name: "Гига (Г)", factor: 1e9 },
+            { name: "Тера (Па)", factor: 1e12 },
            
         ];
 
