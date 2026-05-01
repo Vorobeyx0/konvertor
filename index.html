@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Конвертер физических величин</title>
+    <title>Конвертер физических величин
+    </title>
     <style>
         body {
             background: radial-gradient(circle, rgb(60, 73, 190), rgb(24, 34, 107));
@@ -116,6 +117,7 @@
             background: rgba(255,255,255,0.1);
             padding: 10px;
             border-radius: 16px;
+            
         }
         .unit-card label {
             font-size: 20px;
@@ -129,6 +131,11 @@
             border-radius: 10px;
             text-align: center;
         }
+        .exponent-hint {
+    font-family: 'Segoe UI', 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 500;
+}
     </style>
 </head>
 <body>
@@ -279,9 +286,10 @@
                 // Подсказка со степенью
                 const exponentHint = document.createElement("div");
                 exponentHint.innerHTML = unit.htmlExponent || "&nbsp;";
-                exponentHint.style.fontSize = "12px";
-                exponentHint.style.color = "#aaa";
+                exponentHint.style.fontSize = "26px";
+                exponentHint.style.color = "#bbb";
                 exponentHint.style.marginTop = "5px";
+                exponentHint.style.color = "white";
 
                 unitDiv.appendChild(label);
                 unitDiv.appendChild(input);
@@ -354,18 +362,74 @@
         }
 
         // Температура
-        if (celsius && fahrenheit && kelvin) {
-            celsius.oninput = () => { if (celsius.value) { fahrenheit.value = roundValue((celsius.value * 9/5 + 32)); kelvin.value = roundValue(celsius.value + 273.15); } else { fahrenheit.value = ""; kelvin.value = ""; } };
-            fahrenheit.oninput = () => { if (fahrenheit.value) { celsius.value = roundValue((fahrenheit.value - 32) * 5/9); kelvin.value = roundValue((fahrenheit.value - 32) * 5/9 + 273.15); } else { celsius.value = ""; kelvin.value = ""; } };
-            kelvin.oninput = () => { if (kelvin.value) { celsius.value = roundValue(kelvin.value - 273.15); fahrenheit.value = roundValue((kelvin.value - 273.15) * 9/5 + 32); } else { celsius.value = ""; fahrenheit.value = ""; } };
-        }
+        
+        // Температура — правильная версия (удаляет все старые обработчики)
+if (celsius && fahrenheit && kelvin) {
+    // Удаляем все старые обработчики
+    celsius.oninput = null;
+    fahrenheit.oninput = null;
+    kelvin.oninput = null;
+    
+    // Ставим новые
+    celsius.oninput = () => { 
+        if (celsius.value !== "") { 
+            fahrenheit.value = roundValue((parseFloat(celsius.value) * 9/5 + 32)); 
+            kelvin.value = roundValue(parseFloat(celsius.value) + 273.15); 
+        } else { 
+            fahrenheit.value = ""; 
+            kelvin.value = ""; 
+        } 
+    };
+    
+    fahrenheit.oninput = () => { 
+        if (fahrenheit.value !== "") { 
+            let c = (parseFloat(fahrenheit.value) - 32) * 5/9;
+            celsius.value = roundValue(c); 
+            kelvin.value = roundValue(c + 273.15); 
+        } else { 
+            celsius.value = ""; 
+            kelvin.value = ""; 
+        } 
+    };
+    
+    kelvin.oninput = () => { 
+        if (kelvin.value !== "") { 
+            let c = parseFloat(kelvin.value) - 273.15;
+            celsius.value = roundValue(c); 
+            fahrenheit.value = roundValue(c * 9/5 + 32); 
+        } else { 
+            celsius.value = ""; 
+            fahrenheit.value = ""; 
+        } 
+    };
+}
 
         // Плотность
-        if (kgm && gcm && tm) {
-            kgm.oninput = () => { if (kgm.value) { gcm.value = roundValue(kgm.value / 1000); tm.value = roundValue(kgm.value * 1000); } else { gcm.value = ""; tm.value = ""; } };
-            gcm.oninput = () => { if (gcm.value) { kgm.value = roundValue(gcm.value * 1000); tm.value = roundValue(gcm.value * 1000); } else { kgm.value = ""; tm.value = ""; } };
-            tm.oninput = () => { if (tm.value) { kgm.value = roundValue(tm.value / 1000); gcm.value = roundValue(tm.value / 1000); } else { kgm.value = ""; gcm.value = ""; } };
-        }
+       // Плотность (исправлено)
+if (kgm && gcm && tm) {
+    kgm.oninput = () => { 
+        if (kgm.value) { 
+            let val = parseFloat(kgm.value);
+            gcm.value = roundValue(val / 1000); 
+            tm.value = roundValue(val / 1000);   // т/м³ = кг/м³ / 1000
+        } else { gcm.value = ""; tm.value = ""; }
+    };
+    gcm.oninput = () => { 
+        if (gcm.value) { 
+            let val = parseFloat(gcm.value);
+            kgm.value = roundValue(val * 1000); 
+            tm.value = roundValue(val);           // т/м³ = г/см³ (то же число!)
+        } else { kgm.value = ""; tm.value = ""; }
+    };
+    tm.oninput = () => { 
+        if (tm.value) { 
+            let val = parseFloat(tm.value);
+            kgm.value = roundValue(val * 1000); 
+            gcm.value = roundValue(val);          // г/см³ = т/м³ (то же число!)
+        } else { kgm.value = ""; gcm.value = ""; }
+    };
+}
+
 
         // Глобальная очистка
         window.clearAll = function() {
