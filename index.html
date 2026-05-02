@@ -195,10 +195,10 @@
         <div style="text-align: center; margin-bottom: 20px;">
             <span class="selector-label">📏 Выберите величину:</span>
             <select id="quantitySelect">
-                <option value="length">Длина (мкм ... Тм)</option>
-                <option value="pressure">Давление (Па ... )</option>
-                <option value="job">Работа (Дж, кДж, МДж)</option>
-                <option value="power">Мощность (Вт, кВт, МВт)</option>
+                <option value="length">Длина (L)</option>
+                <option value="pressure">Давление (p)</option>
+                <option value="job">Работа (A)</option>
+                <option value="power">Мощность (N)</option>
             </select>
         </div>
         <div id="unitsGrid" class="units-grid"></div>
@@ -211,43 +211,65 @@
     <script>
         // === ДАННЫЕ ДЛЯ ДЛИНЫ (11 единиц) ===
         const lengthUnits = [
-            { name: "микро (мкм)", htmlExponent: "10⁻⁶ м", factor: 1e-6 },
-            { name: "милли (мм)", htmlExponent: "10⁻³ м", factor: 0.001 },
-            { name: "санти (см)", htmlExponent: "10⁻² м", factor: 0.01 },
-            { name: "деци (дм)", htmlExponent: "10⁻¹ м", factor: 0.1 },
-            { name: "метр (м)", htmlExponent: "м", factor: 1 },
-            { name: "дека (дам)", htmlExponent: "10¹ м", factor: 10 },
-            { name: "гекто (гм)", htmlExponent: "10² м", factor: 100 },
-            { name: "кило (км)", htmlExponent: "10³ м", factor: 1000 },
-            { name: "мега (Мм)", htmlExponent: "10⁶ м", factor: 1e6 },
-            { name: "гига (Гм)", htmlExponent: "10⁹ м", factor: 1e9 },
-            { name: "тера (Тм)", htmlExponent: "10¹² м", factor: 1e12 }
+            { name: "микро ", htmlExponent: "10⁻⁶ м", factor: 1e-6 },
+            { name: "милли ", htmlExponent: "10⁻³ м", factor: 0.001 },
+            { name: "санти ", htmlExponent: "10⁻² м", factor: 0.01 },
+            { name: "деци ", htmlExponent: "10⁻¹ м", factor: 0.1 },
+            { name: "метр ", htmlExponent: "м", factor: 1 },
+            { name: "дека ", htmlExponent: "10¹ м", factor: 10 },
+            { name: "гекто ", htmlExponent: "10² м", factor: 100 },
+            { name: "кило ", htmlExponent: "10³ м", factor: 1000 },
+            { name: "мега ", htmlExponent: "10⁶ м", factor: 1e6 },
+            { name: "гига ", htmlExponent: "10⁹ м", factor: 1e9 },
+            { name: "тера ", htmlExponent: "10¹² м", factor: 1e12 },
         ];
 
         // === ДАННЫЕ ДЛЯ ДАВЛЕНИЯ ===
         const pressureUnits = [
-            { name: "паскаль (Па)", htmlExponent: "Па", factor: 1 },
-            { name: "килопаскаль (кПа)", htmlExponent: "10³ Па", factor: 1000 },
-            { name: "мегапаскаль (МПа)", htmlExponent: "10⁶ Па", factor: 1e6 },
-            { name: "гигапаскаль (ГПа)", htmlExponent: "10⁹ Па", factor: 1e9 },
-            { name: "бар (бар)", htmlExponent: "10⁵ Па", factor: 1e5 },
-            { name: "миллибар (мбар)", htmlExponent: "10² Па", factor: 100 },
-            { name: "физическая атмосфера (атм)", htmlExponent: "101325 Па", factor: 101325 }
+            
+            { name: "микро ", htmlExponent: "10⁻⁶ Па", factor: 1e-6 },
+            { name: "милли ", htmlExponent: "10⁻³ Па", factor: 0.001 },
+            { name: "санти ", htmlExponent: "10⁻² Па", factor: 0.01 },
+            { name: "деци ", htmlExponent: "10⁻¹ Па", factor: 0.1 },
+            { name: "Паскаль ", htmlExponent: "Па", factor: 1 },
+            { name: "дека ", htmlExponent: "10¹ Па", factor: 10 },
+            { name: "гекто ", htmlExponent: "10² Па", factor: 100 },
+            { name: "кило ", htmlExponent: "10³ Па", factor: 1000 },
+            { name: "мега ", htmlExponent: "10⁶ Па", factor: 1e6 },
+            { name: "гига ", htmlExponent: "10⁹ Па", factor: 1e9 },
+            { name: "тера ", htmlExponent: "10¹² Па", factor: 1e12 },
+            { name: "физическая атмосфера ", htmlExponent: "101325 Па", factor: 101325 },
         ];
 
         // === ДАННЫЕ ДЛЯ РАБОТЫ ===
         const jobUnits = [
-            { name: "джоуль (Дж)", htmlExponent: "Дж", factor: 1 },
-            { name: "килоджоуль (кДж)", htmlExponent: "10³ Дж", factor: 1000 },
-            { name: "мегаджоуль (МДж)", htmlExponent: "10⁶ Дж", factor: 1e6 }
+            { name: "микро ", htmlExponent: "10⁻⁶ Дж", factor: 1e-6 },
+            { name: "милли ", htmlExponent: "10⁻³ Дж", factor: 0.001 },
+            { name: "санти ", htmlExponent: "10⁻² Дж", factor: 0.01 },
+            { name: "деци ", htmlExponent: "10⁻¹ Дж", factor: 0.1 },
+            { name: "Джоуль ", htmlExponent: "Дж", factor: 1 },
+            { name: "дека ", htmlExponent: "10¹ Дж", factor: 10 },
+            { name: "гекто ", htmlExponent: "10² Дж", factor: 100 },
+            { name: "кило ", htmlExponent: "10³ Дж", factor: 1000 },
+            { name: "мега ", htmlExponent: "10⁶ Дж", factor: 1e6 },
+            { name: "гига ", htmlExponent: "10⁹ Дж", factor: 1e9 },
+            { name: "тера ", htmlExponent: "10¹² Дж", factor: 1e12 },
         ];
 
         // === ДАННЫЕ ДЛЯ МОЩНОСТИ ===
         const powerUnits = [
-            { name: "ватт (Вт)", htmlExponent: "Вт", factor: 1 },
-            { name: "киловатт (кВт)", htmlExponent: "10³ Вт", factor: 1000 },
-            { name: "мегаватт (МВт)", htmlExponent: "10⁶ Вт", factor: 1e6 },
-            { name: "лошадиная сила (л.с.)", htmlExponent: "≈ 735.5 Вт", factor: 735.5 }
+            { name: "микро ", htmlExponent: "10⁻⁶ Вт", factor: 1e-6 },
+            { name: "милли ", htmlExponent: "10⁻³ Вт", factor: 0.001 },
+            { name: "санти ", htmlExponent: "10⁻² Вт", factor: 0.01 },
+            { name: "деци ", htmlExponent: "10⁻¹ Вт", factor: 0.1 },
+            { name: "Ватт ", htmlExponent: "Вт", factor: 1 },
+            { name: "дека ", htmlExponent: "10¹ Вт", factor: 10 },
+            { name: "гекто ", htmlExponent: "10² Вт", factor: 100 },
+            { name: "кило ", htmlExponent: "10³ Вт", factor: 1000 },
+            { name: "мега ", htmlExponent: "10⁶ Вт", factor: 1e6 },
+            { name: "гига ", htmlExponent: "10⁹ Вт", factor: 1e9 },
+            { name: "тера ", htmlExponent: "10¹² Вт", factor: 1e12 },
+            { name: "лошадиная сила (л.с.)", htmlExponent: "≈ 735.5 Вт", factor: 735.5 },
         ];
 
         let currentUnits = lengthUnits;
@@ -272,10 +294,10 @@
                 input.id = `unit_input_${index}`;
 
                 // Подсветка базовой единицы
-                if ((currentUnits === lengthUnits && unit.name === "метр (м)") ||
-                    (currentUnits === pressureUnits && unit.name === "паскаль (Па)") ||
-                    (currentUnits === jobUnits && unit.name === "джоуль (Дж)") ||
-                    (currentUnits === powerUnits && unit.name === "ватт (Вт)")) {
+                if ((currentUnits === lengthUnits && unit.name === "метр ") ||
+                    (currentUnits === pressureUnits && unit.name === "паскаль ") ||
+                    (currentUnits === jobUnits && unit.name === "джоуль ") ||
+                    (currentUnits === powerUnits && unit.name === "ватт ")) {
                     input.style.border = "3px solid gold";
                     input.style.boxShadow = "0 0 6px gold";
                     input.style.fontWeight = "bold";
